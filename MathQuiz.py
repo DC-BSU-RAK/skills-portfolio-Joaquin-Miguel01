@@ -112,7 +112,53 @@ class MathQuizApp:
         self.question_label.config(
             text=f"{question_number}) {self.num1} {self.operator} {self.num2}?"
         )
-        
+
+    def check_answer(self):
+        try:
+            user_answer = float(self.answer_entry.get())
+
+            if self.operator == '+':
+                correct_answer = self.num1 + self.num2
+            elif self.operator == '-':
+                correct_answer = self.num1 - self.num2
+
+            # Correct answer
+            if abs(user_answer - correct_answer) < 0.01:
+                points = 10 if self.attempt == 1 else 5
+                self.score += points
+                self.result_label.config(text=f"Correct! You earned {points} points.", fg="green")
+                self.score_label.config(text=f"Score: {self.score}")
+
+                self.question_count += 1
+                self.answer_entry.delete(0, tk.END)
+
+                if self.question_count < 10:
+                    self.generate_question()
+                else:
+                    self.end_quiz()
+
+            else:
+                if self.attempt == 1:
+                    self.attempt = 2
+                    self.result_label.config(text="Wrong! Try again for 5 points.", fg="orange")
+                    self.answer_entry.delete(0, tk.END)
+                else:
+                    self.result_label.config(
+                        text=f"Wrong again! The correct answer was {correct_answer}. Moving to next question.",
+                        fg="red"
+                    )
+                    self.answer_entry.delete(0, tk.END)
+                    self.question_count += 1
+                    if self.question_count < 10:
+                        self.generate_question()
+                    else:
+                        self.end_quiz()
+                    self.attempt = 1
+
+        except ValueError:
+            self.result_label.config(text="Please enter a valid number.", fg="red")
+            self.answer_entry.delete(0, tk.END)
+
 if __name__ == "__main__":
     root = tk.Tk()
     app = MathQuizApp(root)
