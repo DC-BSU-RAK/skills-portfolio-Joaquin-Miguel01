@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from PIL import Image, ImageTk
 import random
 
@@ -60,6 +61,11 @@ class MathQuizApp:
         """Initialize quiz based on chosen difficulty"""
         self.difficulty = difficulty
         self.menu_frame.destroy()  # Remove menu screen
+
+        # Reset values
+        self.score = 0
+        self.question_count = 0
+        self.attempt = 1
 
         # Create main content frame
         self.frame = tk.Frame(self.root, bg="white", bd=5)
@@ -158,6 +164,20 @@ class MathQuizApp:
         except ValueError:
             self.result_label.config(text="Please enter a valid number.", fg="red")
             self.answer_entry.delete(0, tk.END)
+
+    def end_quiz(self):
+        """End of my quiz prompt"""
+        self.result_label.config(text=f"Quiz over! Final score: {self.score}", fg="blue")
+        self.submit_button.config(state=tk.DISABLED)
+
+        # Code to ask the user if they want to play again
+        play_again = messagebox.askyesno("Play?", "Quiz over? Would you like to play again")
+        if play_again:
+            self.frame.destroy()
+            self.menu_frame = tk.Frame(self.root, bg="White", bd=5)
+            self.display_menu()
+        else:
+            self.root.destroy()    
 
 if __name__ == "__main__":
     root = tk.Tk()
