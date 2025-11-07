@@ -55,8 +55,64 @@ class MathQuizApp:
 
         tk.Button(self.menu_frame, text="3. Advanced", font=("Arial", 16),
                   command=lambda: self.start_quiz("Advanced")).pack(pady=10)
+        
+    def start_quiz(self, difficulty):
+        """Initialize quiz based on chosen difficulty"""
+        self.difficulty = difficulty
+        self.menu_frame.destroy()  # Remove menu screen
 
+        # Create main content frame
+        self.frame = tk.Frame(self.root, bg="white", bd=5)
+        self.frame.place(relx=0.5, rely=0.5, anchor="center")
 
+        # UI elements
+        self.score_label = tk.Label(self.frame, text="Score: 0", font=("Arial", 14))
+        self.score_label.pack(pady=10)
+
+        self.difficulty_label = tk.Label(self.frame, text=f"Difficulty: {difficulty}", font=("Arial", 12), fg="black")
+        self.difficulty_label.pack(pady=5)
+
+        self.question_label = tk.Label(self.frame, text="", font=("Arial", 16))
+        self.question_label.pack(pady=20)
+
+        self.answer_entry = tk.Entry(self.frame, font=("Arial", 14))
+        self.answer_entry.pack(pady=10)
+
+        self.submit_button = tk.Button(self.frame, text="Submit", font=("Arial", 14), command=self.check_answer)
+        self.submit_button.pack(pady=10)
+
+        self.result_label = tk.Label(self.frame, text="", font=("Arial", 14))
+        self.result_label.pack(pady=10)
+
+        self.generate_question()
+
+    def generate_question(self):
+        """Generate a new math question based on difficulty"""
+        if self.difficulty == "Easy":
+            self.num1 = random.randint(1, 10)
+            self.num2 = random.randint(1, 10)
+            self.operator = random.choice(['+', '-'])
+
+        elif self.difficulty == "Moderate":
+            self.num1 = random.randint(10, 50)
+            self.num2 = random.randint(10, 50)
+            self.operator = random.choice(['+', '-'])
+
+        else:  # Advanced
+            self.num1 = random.randint(1000, 9999)
+            self.num2 = random.randint(1000, 9999)
+            self.operator = random.choice(['+', '-'])
+
+        self.attempt = 1
+        self.update_question_label()
+
+    def update_question_label(self):
+        """Update the question label"""
+        question_number = self.question_count + 1
+        self.question_label.config(
+            text=f"{question_number}) {self.num1} {self.operator} {self.num2}?"
+        )
+        
 if __name__ == "__main__":
     root = tk.Tk()
     app = MathQuizApp(root)
