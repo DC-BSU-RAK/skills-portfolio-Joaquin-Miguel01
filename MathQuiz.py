@@ -15,3 +15,10 @@ class MathQuizApp:
         # Background label
         self.bg_label = tk.Label(root, image=self.bg_image)
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = MathQuizApp(root)
+    root.mainloop()
