@@ -166,15 +166,31 @@ class MathQuizApp:
             self.answer_entry.delete(0, tk.END)
 
     def end_quiz(self):
-        """End of my quiz prompt"""
-        self.result_label.config(text=f"Quiz over! Final score: {self.score}", fg="blue")
+        """End of quiz prompt with grade"""
+        # Determine grade based on score
+        if self.score >= 90:
+            grade = "A+"
+        elif self.score >= 80:
+            grade = "A"
+        elif self.score >= 70:
+            grade = "B"
+        elif self.score >= 60:
+            grade = "C"
+        elif self.score >= 50:
+            grade = "D"
+        else:
+            grade = "F"
+
+        # Show final score and grade
+        self.result_label.config(text=f"Quiz over! Final score: {self.score} | Grade: {grade}", fg="blue")
         self.submit_button.config(state=tk.DISABLED)
 
-        # Code to ask the user if they want to play again
-        play_again = messagebox.askyesno("Play?", "Quiz over? Would you like to play again")
+        # Ask the user if they want to play again
+        play_again = messagebox.askyesno("Play?", "Quiz over! Would you like to play again?")
         if play_again:
             self.frame.destroy()
-            self.menu_frame = tk.Frame(self.root, bg="White", bd=5)
+            self.menu_frame = tk.Frame(self.root, bg="white", bd=5)
+            self.menu_frame.place(relx=0.5, rely=0.5, anchor="center")
             self.display_menu()
         else:
             self.root.destroy()    
