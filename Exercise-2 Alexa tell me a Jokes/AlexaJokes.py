@@ -80,6 +80,22 @@ def next_joke():
     while new_joke == current_joke and len(jokes) > 1:
         new_joke = random.choice(jokes)
     current_joke = new_joke
-    show_joke(current_joke)    
+    show_joke(current_joke)
+
+# --- ROOT WINDOW ---
+root = tk.Tk()
+root.title("Alexa tell me a joke")
+root.geometry("600x440")
+
+# --- JOKE LABELS ---
+joke_label = tk.Label(root, text="Click 'Tell me a joke' to start!", wraplength=500, font=("Arial", 14))
+joke_label.pack(pady=10)
+
+punchline_label = tk.Label(root, text="", wraplength=500, font=("Arial", 14, "bold"), fg="blue")
+punchline_label.pack(pady=5)
+
+# --- BUTTONS ---
+button_frame = tk.Frame(root)
+button_frame.pack(pady=10)
 
 root.mainloop()
