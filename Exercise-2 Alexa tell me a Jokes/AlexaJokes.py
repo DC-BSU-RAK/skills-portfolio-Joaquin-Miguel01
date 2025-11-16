@@ -43,4 +43,21 @@ jokes = [
     "Why don't scientists trust Atoms?They make up everything."
 ]
 
+current_joke = ""
+animation_running = False  # CODE TO CONTROL THE ANIMATION
+
+def show_joke(joke):
+    if '?' in joke:
+        setup = joke.split('?', 1)[0] + '?'
+    else:
+        setup = joke
+    joke_label.config(text=setup)
+    punchline_label.config(text="")
+
+def tell_joke():
+    global current_joke, animation_running
+    animation_running = False  # STOP ANIMATION
+    current_joke = random.choice(jokes)
+    show_joke(current_joke)
+
 root.mainloop()
