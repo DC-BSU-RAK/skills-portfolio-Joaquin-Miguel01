@@ -98,4 +98,25 @@ punchline_label.pack(pady=5)
 button_frame = tk.Frame(root)
 button_frame.pack(pady=10)
 
+button_style = {
+    "font": ("Arial", 12, "bold"),
+    "bg": "#9966CC",  # Lilac
+    "fg": "white",
+    "activebackground": "#8844BB", # Amethyst
+    "width": 15,
+    "bd": 0,
+    "relief": "ridge",
+    "cursor": "hand2",
+    "padx": 5,
+    "pady": 5
+}
+
+tk.Button(button_frame, text="Tell me a joke", command=tell_joke, **button_style).pack(side="left", padx=20)
+tk.Button(button_frame, text="Reveal Joke", command=reveal_joke, **button_style).pack(side="left", padx=20)
+tk.Button(button_frame, text="Next Joke", command=next_joke, **button_style).pack(side="left", padx=20)
+
+# --- CANVAS FOR ANIMATED GIF BELOW BUTTONS --- 
+canvas = tk.Canvas(root, width=500, height=200)
+canvas.pack(pady=10)
+
 root.mainloop()
