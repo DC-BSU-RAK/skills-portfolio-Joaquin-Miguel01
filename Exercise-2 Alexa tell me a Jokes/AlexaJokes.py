@@ -60,4 +60,26 @@ def tell_joke():
     current_joke = random.choice(jokes)
     show_joke(current_joke)
 
+def reveal_joke():
+    global animation_running
+    if current_joke:
+        if '?' in current_joke:
+            punchline = current_joke.split('?', 1)[1]
+            punchline_label.config(text=punchline)
+        else:
+            punchline_label.config(text=current_joke)
+        animation_running = True
+        animate_sticker()  # START ANIMATION
+    else:
+        punchline_label.config(text="Click 'Tell me a joke' first!")
+
+def next_joke():
+    global current_joke, animation_running
+    animation_running = False  # STOP ANIMATION
+    new_joke = random.choice(jokes)
+    while new_joke == current_joke and len(jokes) > 1:
+        new_joke = random.choice(jokes)
+    current_joke = new_joke
+    show_joke(current_joke)    
+
 root.mainloop()
