@@ -119,4 +119,30 @@ tk.Button(button_frame, text="Next Joke", command=next_joke, **button_style).pac
 canvas = tk.Canvas(root, width=500, height=200)
 canvas.pack(pady=10)
 
+# LOAD GIF (GOT SOME HELP WITH THE CODE FROM CHATGPT FOR THIS PART)
+sticker_gif = Image.open("animated_cat.gif")
+frames = [ImageTk.PhotoImage(frame.copy().convert("RGBA")) for frame in ImageSequence.Iterator(sticker_gif)]
+gif_width, gif_height = sticker_gif.size
+frame_index = 0
+sticker = canvas.create_image(100, 100, image=frames[0])
+x_velocity = 5
+
+def animate_sticker():
+    global frame_index, x_velocity
+    if not animation_running:  # TO STOP THE ANIMATIOn
+        return
+    
+    # UPADATE FRAME
+    frame_index = (frame_index + 1) % len(frames)
+    canvas.itemconfig(sticker, image=frames[frame_index])
+    
+    # MOVEMENT OF STIKER
+    canvas.move(sticker, x_velocity, 0)
+    pos = canvas.coords(sticker)
+    if pos[0] + gif_width/2 > 500 or pos[0] - gif_width/2 < 0:
+        x_velocity = -x_velocity
+    
+    delay = sticker_gif.info.get('duration', 100)
+    root.after(delay, animate_sticker)
+
 root.mainloop()
