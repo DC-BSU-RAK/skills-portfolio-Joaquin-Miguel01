@@ -113,7 +113,7 @@ class StudentManager:
         ]
 
         for text, cmd in buttons:
-            tk.Button(menu_frame, text=text, width=22, command=cmd).pack(pady=5)
+            tk.Button(menu_frame, text=text, width=22, command=cmd).pack(pady=10)
 
     # ------------------ Utility ------------------
 
