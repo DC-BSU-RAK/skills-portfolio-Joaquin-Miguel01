@@ -145,4 +145,9 @@ def animate_sticker():
     delay = sticker_gif.info.get('duration', 100)
     root.after(delay, animate_sticker)
 
+try:
+    icon = tk.PhotoImage(file="Exercise-2 Alexa Jokes/laugh.png")
+    root.iconphoto(True, icon)
+except Exception as e:
+    print("Icon not loaded:", e)
 root.mainloop()
