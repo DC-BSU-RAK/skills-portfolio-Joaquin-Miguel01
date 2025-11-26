@@ -197,5 +197,6 @@ class MathQuizApp:
 
 if __name__ == "__main__":
     root = tk.Tk()
+    root.iconbitmap("logo.ico")
     app = MathQuizApp(root)
     root.mainloop()
