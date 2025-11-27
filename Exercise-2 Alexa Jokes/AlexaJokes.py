@@ -1,6 +1,7 @@
 import tkinter as tk
 import random
 from PIL import Image, ImageTk, ImageSequence
+import winsound  # <- Windows sound library
 
 # --- JOKES LIST ---
 jokes = [
@@ -44,8 +45,17 @@ jokes = [
 ]
 
 current_joke = ""
-animation_running = False  # CODE TO CONTROL THE ANIMATION
+animation_running = False  # Code to control animation
 
+# --- SOUND FUNCTIONS ---
+def play_sound():
+    winsound.PlaySound(r"Exercise-2 Alexa Jokes/cat_laughing_meme_sound_effect.wav",
+                        winsound.SND_FILENAME | winsound.SND_ASYNC)
+
+def stop_sound():
+    winsound.PlaySound(None, winsound.SND_PURGE)
+
+# --- JOKE FUNCTIONS ---
 def show_joke(joke):
     if '?' in joke:
         setup = joke.split('?', 1)[0] + '?'
@@ -56,7 +66,8 @@ def show_joke(joke):
 
 def tell_joke():
     global current_joke, animation_running
-    animation_running = False  # STOP ANIMATION
+    animation_running = False  # Stop animation
+    stop_sound()  # Stop sound
     current_joke = random.choice(jokes)
     show_joke(current_joke)
 
@@ -69,13 +80,15 @@ def reveal_joke():
         else:
             punchline_label.config(text=current_joke)
         animation_running = True
-        animate_sticker()  # START ANIMATION
+        play_sound()  # Start sound
+        animate_sticker()
     else:
         punchline_label.config(text="Click 'Tell me a joke' first!")
 
 def next_joke():
     global current_joke, animation_running
-    animation_running = False  # STOP ANIMATION
+    animation_running = False  # Stop animation
+    stop_sound()  # Stop sound
     new_joke = random.choice(jokes)
     while new_joke == current_joke and len(jokes) > 1:
         new_joke = random.choice(jokes)
@@ -115,11 +128,11 @@ tk.Button(button_frame, text="Tell me a joke", command=tell_joke, **button_style
 tk.Button(button_frame, text="Reveal Joke", command=reveal_joke, **button_style).pack(side="left", padx=20)
 tk.Button(button_frame, text="Next Joke", command=next_joke, **button_style).pack(side="left", padx=20)
 
-# --- CANVAS FOR ANIMATED GIF BELOW BUTTONS --- 
+# --- CANVAS FOR ANIMATED GIF BELOW BUTTONS ---
 canvas = tk.Canvas(root, width=500, height=200)
 canvas.pack(pady=10)
 
-# LOAD GIF (GOT SOME HELP WITH THE CODE FROM CHATGPT FOR THIS PART)
+# LOAD GIF
 sticker_gif = Image.open("animated_cat.gif")
 frames = [ImageTk.PhotoImage(frame.copy().convert("RGBA")) for frame in ImageSequence.Iterator(sticker_gif)]
 gif_width, gif_height = sticker_gif.size
@@ -129,19 +142,14 @@ x_velocity = 5
 
 def animate_sticker():
     global frame_index, x_velocity
-    if not animation_running:  # TO STOP THE ANIMATIOn
+    if not animation_running:
         return
-    
-    # UPADATE FRAME
     frame_index = (frame_index + 1) % len(frames)
     canvas.itemconfig(sticker, image=frames[frame_index])
-    
-    # MOVEMENT OF STIKER
     canvas.move(sticker, x_velocity, 0)
     pos = canvas.coords(sticker)
     if pos[0] + gif_width/2 > 500 or pos[0] - gif_width/2 < 0:
         x_velocity = -x_velocity
-    
     delay = sticker_gif.info.get('duration', 100)
     root.after(delay, animate_sticker)
 
@@ -150,4 +158,5 @@ try:
     root.iconphoto(True, icon)
 except Exception as e:
     print("Icon not loaded:", e)
+
 root.mainloop()
