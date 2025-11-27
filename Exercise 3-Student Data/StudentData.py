@@ -239,9 +239,9 @@ class StudentManager:
             name = simpledialog.askstring("Add", "Enter student name:", parent=self.root)
             if not name: return
 
-            c1 = simpledialog.askinteger("CW1 (0–20)",  "Coursework 1 (0–20):", parent=self.root)
-            c2 = simpledialog.askinteger("CW2 (0–20)", "Coursework 1 (0–20):", parent=self.root)
-            c3 = simpledialog.askinteger("CW3 (0–20)" "Coursework 1 (0–20):", parent=self.root)
+            c1 = simpledialog.askinteger("CW1 (0–20)", "Enter CW1:", parent=self.root)
+            c2 = simpledialog.askinteger("CW2 (0–20)", "Enter CW2:", parent=self.root)
+            c3 = simpledialog.askinteger("CW3 (0–20)", "Enter CW3:", parent=self.root)
             exam = simpledialog.askinteger("Exam", "Enter exam mark (0–100):", parent=self.root)
 
         except:
