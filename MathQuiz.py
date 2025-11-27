@@ -56,7 +56,53 @@ class MathQuizApp:
 
         tk.Button(self.menu_frame, text="3. Advanced", font=("Arial", 16),
                   command=lambda: self.start_quiz("Advanced")).pack(pady=10)
-        
+
+        # NEW: Instructions button
+        tk.Button(self.menu_frame, text="Instructions", font=("Arial", 16),
+                  command=self.show_instructions).pack(pady=10)
+
+    def show_instructions(self):
+        """Show instructions *inside* the background image"""
+
+        # Hide the menu
+        self.menu_frame.place_forget()
+
+        # Create instruction frame centered on image
+        self.instructions_frame = tk.Frame(self.root, bg="white", bd=5)
+        self.instructions_frame.place(relx=0.5, rely=0.5, anchor="center")
+
+        tk.Label(self.instructions_frame, text="Instructions",
+                 font=("Arial", 22, "bold"), bg="white").pack(pady=10)
+
+        instructions = (
+            "1. Select a difficulty level (Easy, Moderate, Advanced).\n"
+            "2. You will be given 10 math questions.\n"
+            "3. Type your answer and click Submit.\n"
+            "4. You get 2 attempts per question:\n"
+            "       • 1st attempt correct = 10 points\n"
+            "       • 2nd attempt correct = 5 points\n"
+            "       • 3nd wrong attempt = 0 points\n"
+            "5. If both attempts are wrong, the correct answer is shown.\n"
+            "6. After 10 questions, you get a final score and grade.\n"
+            "7. You can choose to play again or exit."
+        )
+
+        tk.Label(self.instructions_frame, text=instructions,
+                 font=("Arial", 14), bg="white", justify="left").pack(padx=20, pady=10)
+
+        # Back Button to return to the main menu
+        tk.Button(self.instructions_frame, text="Back", font=("Arial", 14),
+                  command=self.back_to_menu).pack(pady=20)
+
+    def back_to_menu(self):
+        """Return to difficulty menu from instructions"""
+        self.instructions_frame.destroy()
+
+        self.menu_frame = tk.Frame(self.root, bg="white", bd=5)
+        self.menu_frame.place(relx=0.5, rely=0.5, anchor="center")
+
+        self.display_menu()
+
     def start_quiz(self, difficulty):
         """Initialize quiz based on chosen difficulty"""
         self.difficulty = difficulty
@@ -167,7 +213,6 @@ class MathQuizApp:
 
     def end_quiz(self):
         """End of quiz prompt with grade"""
-        # Determine grade based on score
         if self.score >= 90:
             grade = "A+"
         elif self.score >= 80:
@@ -181,11 +226,9 @@ class MathQuizApp:
         else:
             grade = "F"
 
-        # Show final score and grade
         self.result_label.config(text=f"Quiz over! Final score: {self.score} | Grade: {grade}", fg="blue")
         self.submit_button.config(state=tk.DISABLED)
 
-        # Ask the user if they want to play again
         play_again = messagebox.askyesno("Play?", "Quiz over! Would you like to play again?")
         if play_again:
             self.frame.destroy()
@@ -193,7 +236,7 @@ class MathQuizApp:
             self.menu_frame.place(relx=0.5, rely=0.5, anchor="center")
             self.display_menu()
         else:
-            self.root.destroy()    
+            self.root.destroy()
 
 if __name__ == "__main__":
     root = tk.Tk()
